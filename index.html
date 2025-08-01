@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💕 我们的爱情小树 💕</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Supabase客户端 -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部导航 -->
+        <header class="header">
+            <div class="nav-container">
+                <h1 class="logo">💕 爱情小树</h1>
+                <nav class="nav">
+                    <button class="nav-btn active" data-tab="home">
+                        <i class="fas fa-home"></i>
+                        <span>首页</span>
+                    </button>
+                    <button class="nav-btn" data-tab="diary">
+                        <i class="fas fa-book"></i>
+                        <span>日记</span>
+                    </button>
+                    <button class="nav-btn" data-tab="photos">
+                        <i class="fas fa-images"></i>
+                        <span>相册</span>
+                    </button>
+                    <button class="nav-btn" data-tab="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>设置</span>
+                    </button>
+                    <button class="nav-btn logout-btn" id="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>登出</span>
+                    </button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- 主内容区域 -->
+        <main class="main-content">
+            <!-- 首页标签页 -->
+            <div class="tab-content active" id="home">
+                <!-- 情侣信息卡片 -->
+                <div class="couple-info">
+                    <div class="couple-card">
+                        <div class="partner" id="partner1">
+                            <div class="avatar">
+                                <img src="https://via.placeholder.com/80x80/ff69b4/ffffff?text=💕" alt="Partner 1" id="avatar1">
+                                <input type="file" id="avatar-upload1" accept="image/*" style="display: none;">
+                            </div>
+                            <input type="text" class="name-input" id="name1" placeholder="输入你的名字">
+                        </div>
+                        <div class="love-heart">
+                            <i class="fas fa-heart"></i>
+                            <div class="days-together">
+                                <span id="days-count">0</span>
+                                <small>天</small>
+                            </div>
+                        </div>
+                        <div class="partner" id="partner2">
+                            <div class="avatar">
+                                <img src="https://via.placeholder.com/80x80/87ceeb/ffffff?text=💙" alt="Partner 2" id="avatar2">
+                                <input type="file" id="avatar-upload2" accept="image/*" style="display: none;">
+                            </div>
+                            <input type="text" class="name-input" id="name2" placeholder="输入TA的名字">
+                        </div>
+                    </div>
+                    <div class="start-date">
+                        <label for="relationship-start">💕 在一起的日子从:</label>
+                        <input type="date" id="relationship-start">
+                    </div>
+                </div>
+
+                <!-- 打卡和水滴系统 -->
+                <div class="check-in-section">
+                    <div class="water-drops">
+                        <i class="fas fa-tint"></i>
+                        <span id="water-count">0</span>
+                        <small>水滴</small>
+                    </div>
+                    <div class="check-in-buttons">
+                        <button class="check-in-btn" id="checkin1">
+                            <i class="fas fa-check"></i>
+                            <span id="name1-display">Hu</span> 打卡
+                        </button>
+                        <button class="check-in-btn" id="checkin2">
+                            <i class="fas fa-check"></i>
+                            <span id="name2-display">Tu</span> 打卡
+                        </button>
+                    </div>
+                    <div class="check-status">
+                        <div class="status-item">
+                            <span id="name1-status">今日未打卡</span>
+                            <i class="status-icon" id="status1"></i>
+                        </div>
+                        <div class="status-item">
+                            <span id="name2-status">今日未打卡</span>
+                            <i class="status-icon" id="status2"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 爱情小树 -->
+                <div class="tree-section">
+                    <div class="tree-container">
+                        <div class="tree" id="love-tree">
+                            <div class="tree-level" data-level="0">🌱</div>
+                        </div>
+                        <div class="tree-info">
+                            <h3>我们的爱情树</h3>
+                            <div class="tree-stats">
+                                <div class="stat">
+                                    <span>等级: </span>
+                                    <span id="tree-level">1</span>
+                                </div>
+                                <div class="stat">
+                                    <span>经验: </span>
+                                    <span id="tree-exp">0/10</span>
+                                </div>
+                            </div>
+                            <button class="water-btn" id="water-tree">
+                                <i class="fas fa-tint"></i>
+                                浇水 (消耗1水滴)
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tree-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="tree-progress"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 日记标签页 -->
+            <div class="tab-content" id="diary">
+                <div class="diary-section">
+                    <div class="diary-header">
+                        <h2><i class="fas fa-book"></i> 我们的爱情日记</h2>
+                        <button class="add-diary-btn" id="add-diary">
+                            <i class="fas fa-plus"></i>
+                            写日记
+                        </button>
+                    </div>
+                    <div class="diary-list" id="diary-list">
+                        <!-- 日记条目将在这里动态生成 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 相册标签页 -->
+            <div class="tab-content" id="photos">
+                <div class="photos-section">
+                    <div class="photos-header">
+                        <h2><i class="fas fa-images"></i> 我们的回忆相册</h2>
+                        <button class="add-photo-btn" id="add-photo">
+                            <i class="fas fa-plus"></i>
+                            添加照片
+                        </button>
+                    </div>
+                    <div class="photos-grid" id="photos-grid">
+                        <!-- 照片将在这里动态生成 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 设置标签页 -->
+            <div class="tab-content" id="settings">
+                <div class="settings-section">
+                    <h2><i class="fas fa-cog"></i> 设置</h2>
+                    
+                    <!-- 云端同步状态 -->
+                    <div class="settings-group">
+                        <h3>📡 云端同步状态</h3>
+                        <div class="cloud-status-display">
+                            <span id="cloud-status">📱 仅本地存储</span>
+                        </div>
+                        <button class="settings-btn" id="setup-cloud">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            配置云端同步
+                        </button>
+                        <button class="settings-btn" id="sync-from-cloud">
+                            <i class="fas fa-sync"></i>
+                            从云端同步数据
+                        </button>
+                        <button class="settings-btn" id="get-couple-id">
+                            <i class="fas fa-heart"></i>
+                            获取情侣ID
+                        </button>
+                    </div>
+                    
+                    <!-- 数据管理 -->
+                    <div class="settings-group">
+                        <h3>💾 数据管理</h3>
+                        <button class="settings-btn" id="export-data">
+                            <i class="fas fa-download"></i>
+                            导出数据
+                        </button>
+                        <button class="settings-btn" id="import-data">
+                            <i class="fas fa-upload"></i>
+                            导入数据
+                        </button>
+                        <button class="settings-btn danger" id="reset-data">
+                            <i class="fas fa-trash"></i>
+                            重置所有数据
+                        </button>
+                    </div>
+                    
+                    <!-- 使用说明 -->
+                    <div class="settings-group">
+                        <h3>📖 使用说明</h3>
+                        <div class="help-content">
+                            <p><strong>🌟 云端同步功能:</strong></p>
+                            <ol>
+                                <li>注册免费的 <a href="https://supabase.com" target="_blank">Supabase</a> 账户</li>
+                                <li>创建新项目，获取项目URL和API密钥</li>
+                                <li>点击"配置云端同步"，输入你的配置信息</li>
+                                <li>获取情侣ID分享给TA，实现数据同步</li>
+                            </ol>
+                            <p><strong>💡 提示:</strong> 即使不配置云端同步，所有数据也会安全保存在你的浏览器中！</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 弹窗模态框 -->
+    <div class="modal" id="diary-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>写日记</h3>
+                <button class="close-btn" id="close-diary-modal">×</button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="diary-title" placeholder="日记标题">
+                <textarea id="diary-content" placeholder="写下你们的美好回忆..."></textarea>
+                <div class="diary-author">
+                    <label>作者:</label>
+                    <select id="diary-author-select">
+                        <option value="partner1">Hu</option>
+                        <option value="partner2">Tu</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancel-diary">取消</button>
+                <button class="btn-primary" id="save-diary">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="photo-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>添加照片</h3>
+                <button class="close-btn" id="close-photo-modal">×</button>
+            </div>
+            <div class="modal-body">
+                <input type="file" id="photo-upload" accept="image/*" multiple>
+                <input type="text" id="photo-caption" placeholder="照片描述...">
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancel-photo">取消</button>
+                <button class="btn-primary" id="save-photo">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
