@@ -69,9 +69,9 @@ class LoveTreeApp {
             '🌱', '🌿', '🌳', '🌲', '🎄', '🌸', '🌺', '🌻', '🌹', '💝'
         ];
         
-        // Supabase配置 (需要用户配置)
-        this.supabaseUrl = '';
-        this.supabaseKey = '';
+        // Supabase配置 (从配置文件读取)
+        this.supabaseUrl = window.APP_CONFIG?.SUPABASE_URL || '';
+        this.supabaseKey = window.APP_CONFIG?.SUPABASE_ANON_KEY || '';
         this.supabaseClient = null;
         this.coupleId = localStorage.getItem('coupleId') || this.generateCoupleId();
         
@@ -250,14 +250,8 @@ class LoveTreeApp {
 
     // 云端同步设置
     setupCloudSync() {
-        // 检查是否已配置Supabase
-        const savedConfig = localStorage.getItem('supabaseConfig');
-        if (savedConfig) {
-            const config = JSON.parse(savedConfig);
-            this.supabaseUrl = config.url;
-            this.supabaseKey = config.key;
-            this.initSupabase();
-        }
+        // 直接使用硬编码的Supabase配置，自动初始化云端同步
+        this.initSupabase();
     }
 
     // 初始化Supabase客户端
